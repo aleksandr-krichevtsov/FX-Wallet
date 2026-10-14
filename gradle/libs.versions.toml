@@ -11,8 +11,6 @@ composeBom = "2026.09.00"
 kotlin = "2.4.20"
 jetbrainsKotlinJvm = "2.4.20"
 kotlinxCoroutines = "1.11.0"
-appcompat = "1.6.1"
-material = "1.10.0"
 turbine = "1.2.1"
 mockk = "1.14.11"
 
@@ -31,8 +29,6 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 javax-inject = { module = "javax.inject:javax.inject", version = "1" }

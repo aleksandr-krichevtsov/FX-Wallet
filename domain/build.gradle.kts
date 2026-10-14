@@ -13,7 +13,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.kotlinx.coroutines.core)
+    api(libs.kotlinx.coroutines.core)
     implementation(libs.javax.inject)
 
     testImplementation(libs.junit)

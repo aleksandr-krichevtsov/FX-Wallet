@@ -1,16 +1,21 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ktlint.gradle)
+}
+
+ktlint {
+    version.set(libs.versions.ktlint)
 }
 
 android {
-    namespace = "io.github.aleksandr_krichevtsov.fxwallet"
+    namespace = "io.github.aleksandrkrichevtsov.fxwallet"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "io.github.aleksandr_krichevtsov.fxwallet"
+        applicationId = "io.github.aleksandrkrichevtsov.fxwallet"
         minSdk = 26
         targetSdk = 37
         versionCode = 1

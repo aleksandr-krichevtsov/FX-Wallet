@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FXWallet">
         <activity
-            android:name="io.github.aleksandr_krichevtsov.fxwallet.MainActivity"
+            android:name="io.github.aleksandrkrichevtsov.fxwallet.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.FXWallet"

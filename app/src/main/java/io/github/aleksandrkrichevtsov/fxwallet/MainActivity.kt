@@ -1,4 +1,4 @@
-package io.github.aleksandr_krichevtsov.fxwallet
+package io.github.aleksandrkrichevtsov.fxwallet
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.aleksandr_krichevtsov.fxwallet.ui.theme.FXWalletTheme
+import io.github.aleksandrkrichevtsov.fxwallet.ui.theme.FXWalletTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

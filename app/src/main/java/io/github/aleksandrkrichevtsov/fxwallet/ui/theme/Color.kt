@@ -1,4 +1,4 @@
-package io.github.aleksandr_krichevtsov.fxwallet.ui.theme
+package io.github.aleksandrkrichevtsov.fxwallet.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

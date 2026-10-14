@@ -1,9 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ktlint.gradle)
+}
+
+ktlint {
+    version.set(libs.versions.ktlint)
 }
 
 android {
-    namespace = "io.github.aleksandr_krichevtsov.fxwallet.data"
+    namespace = "io.github.aleksandrkrichevtsov.fxwallet.data"
     compileSdk {
         version = release(37)
     }
@@ -17,7 +22,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
 }
 
 dependencies {

@@ -1,6 +1,11 @@
 plugins {
     id("java-library")
     alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.ktlint.gradle)
+}
+
+ktlint {
+    version.set(libs.versions.ktlint)
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_11

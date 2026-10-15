@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ktlint.gradle)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
 }
 
 detekt {
@@ -12,6 +13,14 @@ detekt {
 
 ktlint {
     version.set(libs.versions.ktlint)
+}
+
+kover {
+    currentProject {
+        createVariant("coverage") {
+            add("debug")
+        }
+    }
 }
 
 android {

@@ -23,5 +23,4 @@ jobs:
                   distribution: temurin
                   java-version: 25
             - uses: gradle/actions/setup-gradle@v6.4.0
-            - run: ./gradlew ktlintCheck lint test assembleDebug
-            - run: ./gradlew ktlintCheck detekt lint test assembleDebug
+            - run: ./gradlew ktlintCheck detekt lint test assembleDebug koverLogCoverage koverVerifyCoverage

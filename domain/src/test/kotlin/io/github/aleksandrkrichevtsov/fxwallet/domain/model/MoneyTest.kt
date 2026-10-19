@@ -1,11 +1,12 @@
-import io.github.aleksandrkrichevtsov.fxwallet.domain.model.Money
+package io.github.aleksandrkrichevtsov.fxwallet.domain.model
+
+import java.math.BigDecimal
+import java.util.Currency
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.math.BigDecimal
-import java.util.Currency
 
 class MoneyTest {
     private val eur = Currency.getInstance("EUR")
@@ -45,28 +46,29 @@ class MoneyTest {
     }
 
     private val usd = Currency.getInstance("USD")
+
     @Test
-    fun `if arguments of operator plus has different currencies it should throws IllegalArgumentException`() {
+    fun `plus with different currencies should throws IllegalArgumentException`() {
         val a = Money.of(BigDecimal("1.5"), eur)
         val b = Money.of(BigDecimal("1"), usd)
 
-        assertThrows(IllegalArgumentException::class.java) {a + b}
+        assertThrows(IllegalArgumentException::class.java) { a + b }
     }
 
     @Test
-    fun `if arguments of operator minus has different currencies it should throws IllegalArgumentException`() {
+    fun `minus with different currencies should throws IllegalArgumentException`() {
         val a = Money.of(BigDecimal("1.5"), eur)
         val b = Money.of(BigDecimal("1"), usd)
 
-        assertThrows(IllegalArgumentException::class.java) {a - b}
+        assertThrows(IllegalArgumentException::class.java) { a - b }
     }
 
     @Test
-    fun `if arguments of operators compareTo has different currencies it should throws IllegalArgumentException`() {
+    fun `compareTo with different currencies  should throws IllegalArgumentException`() {
         val a = Money.of(BigDecimal("1.5"), eur)
         val b = Money.of(BigDecimal("1"), usd)
 
-        assertThrows(IllegalArgumentException::class.java) {a < b}
+        assertThrows(IllegalArgumentException::class.java) { a < b }
     }
 
     @Test

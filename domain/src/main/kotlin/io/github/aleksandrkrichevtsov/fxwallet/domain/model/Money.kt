@@ -7,6 +7,9 @@ import java.util.Currency
 class Money private constructor(val amount: BigDecimal, val currency: Currency) :
     Comparable<Money> {
 
+    val isZero: Boolean get() = amount.signum() == 0
+    val isNegative: Boolean get() = amount.signum() < 0
+
     operator fun plus(other: Money): Money {
         requireSameCurrency(other)
 
@@ -31,18 +34,23 @@ class Money private constructor(val amount: BigDecimal, val currency: Currency) 
         return amount.compareTo(other.amount)
     }
 
-    val isZero: Boolean get() = amount.signum() == 0
-    val isNegative: Boolean get() = amount.signum() < 0
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Money) return false
         return amount == other.amount && currency == other.currency
     }
+
     override fun hashCode(): Int = 31 * amount.hashCode() + currency.hashCode()
 
     override fun toString(): String =
         "amount: ${amount.toPlainString()}, currency: ${currency.currencyCode}"
+
+    private fun requireSameCurrency(other: Money) {
+        require(currency == other.currency) {
+            "${currency.currencyCode} and ${other.currency.currencyCode} " +
+                "are not the same. It requires the same currency."
+        }
+    }
 
     companion object {
         fun of(amount: BigDecimal, currency: Currency): Money {
@@ -52,14 +60,7 @@ class Money private constructor(val amount: BigDecimal, val currency: Currency) 
             val normalizedAmount = amount.setScale(digits, RoundingMode.HALF_EVEN)
             return Money(normalizedAmount, currency)
         }
-        fun zero(currency: Currency): Money = of(BigDecimal.ZERO, currency)
-    }
 
-    private fun requireSameCurrency(other: Money) {
-        require(currency == other.currency)
-        {
-            "${currency.currencyCode} and ${other.currency.currencyCode} " +
-                "are not the same. It requires the same currency."
-        }
+        fun zero(currency: Currency): Money = of(BigDecimal.ZERO, currency)
     }
 }

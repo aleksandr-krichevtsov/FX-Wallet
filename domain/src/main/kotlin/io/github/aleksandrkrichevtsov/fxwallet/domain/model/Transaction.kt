@@ -7,4 +7,8 @@ data class Transaction(
     val type: TransactionType,
     val entries: List<LedgerEntry>,
     val createdAt: Instant
-)
+) {
+    init {
+
+    }
+}

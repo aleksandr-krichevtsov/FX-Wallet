@@ -8,7 +8,6 @@ import kotlin.time.Instant
 
 class BalanceTest {
     private val eur: Currency = Currency.getInstance("EUR")
-    private val createdAt: Instant = Instant.parse("2026-10-15T10:00:00Z")
     private val userEurId: AccountId = AccountId("user-eur")
     private val topUpEurId: AccountId = AccountId("top-up-eur")
     private val userAccount: Account = Account(userEurId, AccountType.USER, eur)
@@ -20,13 +19,13 @@ class BalanceTest {
     fun `no entries have zero money`() {
         val entries = emptyList<LedgerEntry>()
 
-        val accountWithZeroMoney = entries.balanceOf(userAccount)
+        val zeroBalance = entries.balanceOf(userAccount)
 
-        assertEquals(Money.zero(eur), accountWithZeroMoney)
+        assertEquals(Money.zero(eur), zeroBalance)
     }
 
     @Test
-    fun `account's entries count is 100EUR`() {
+    fun `a balance ignores entries of other accounts`() {
         val userEntry = LedgerEntry(userEurId, createMoneyObject("100.00", eur))
         val topUpEntry = LedgerEntry(topUpEurId, createMoneyObject("-100.00", eur))
 

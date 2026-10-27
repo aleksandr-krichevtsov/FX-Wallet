@@ -14,7 +14,6 @@ class TransactionTest {
     private val userEurId: AccountId = AccountId("user-eur")
     private val userUsdId: AccountId = AccountId("user-usd")
     private val topUpEurId: AccountId = AccountId("top-up-eur")
-    private val topUpUsdId: AccountId = AccountId("top-up-usd")
     private val fxEurId: AccountId = AccountId("fx-eur")
     private val fxUsdId: AccountId = AccountId("fx-usd")
     private fun createMoneyObject(amount: String, currency: Currency): Money {
@@ -37,17 +36,17 @@ class TransactionTest {
 
     @Test
     fun `a balanced exchange is accepted`() {
-        val userEurNegativeEntry = LedgerEntry(userEurId, createMoneyObject("-10.00", eur))
-        val userEurPositiveEntry = LedgerEntry(fxEurId, createMoneyObject("10.00", eur))
+        val userEurEntry = LedgerEntry(userEurId, createMoneyObject("-10.00", eur))
+        val fxEurEntry = LedgerEntry(fxEurId, createMoneyObject("10.00", eur))
 
-        val userUsdNegativeEntry = LedgerEntry(userUsdId, createMoneyObject("10.84", usd))
-        val userUsdPositiveEntry = LedgerEntry(fxUsdId, createMoneyObject("-10.84", usd))
+        val userUsdEntry = LedgerEntry(userUsdId, createMoneyObject("10.84", usd))
+        val fxUsdEntry = LedgerEntry(fxUsdId, createMoneyObject("-10.84", usd))
 
         val entries = listOf(
-            userUsdPositiveEntry,
-            userUsdNegativeEntry,
-            userEurPositiveEntry,
-            userEurNegativeEntry
+            fxUsdEntry,
+            userUsdEntry,
+            fxEurEntry,
+            userEurEntry
         )
 
         val transaction = Transaction(
@@ -62,15 +61,15 @@ class TransactionTest {
 
     @Test
     fun `an unbalanced transaction throws`() {
-        val userNegativeEntry = LedgerEntry(topUpEurId, createMoneyObject("-100.00", eur))
-        val userPositiveEntry = LedgerEntry(userEurId, createMoneyObject("90.00", eur))
+        val topUpEntry = LedgerEntry(topUpEurId, createMoneyObject("-100.00", eur))
+        val userEntry = LedgerEntry(userEurId, createMoneyObject("90.00", eur))
 
-        val entries = listOf(userNegativeEntry, userPositiveEntry)
+        val entries = listOf(topUpEntry, userEntry)
 
         assertThrows(IllegalArgumentException::class.java) {
             Transaction(
                 id = TransactionId("t1"),
-                type = TransactionType.EXCHANGE,
+                type = TransactionType.TOP_UP,
                 entries = entries,
                 createdAt = createdAt
             )
@@ -79,17 +78,17 @@ class TransactionTest {
 
     @Test
     fun `an unbalanced in one currency throws`() {
-        val userEurNegativeEntry = LedgerEntry(userUsdId, createMoneyObject("-10.00", eur))
-        val userEurPositiveEntry = LedgerEntry(fxUsdId, createMoneyObject("10.00", eur))
+        val userEurEntry = LedgerEntry(userEurId, createMoneyObject("-10.00", eur))
+        val fxEurEntry = LedgerEntry(fxEurId, createMoneyObject("10.00", eur))
 
-        val userUsdNegativeEntry = LedgerEntry(userUsdId, createMoneyObject("10.00", usd))
-        val userUsdPositiveEntry = LedgerEntry(fxUsdId, createMoneyObject("-10.84", usd))
+        val userUsdEntry = LedgerEntry(userUsdId, createMoneyObject("10.00", usd))
+        val fxUsdEntry = LedgerEntry(fxUsdId, createMoneyObject("-10.84", usd))
 
         val entries = listOf(
-            userUsdPositiveEntry,
-            userUsdNegativeEntry,
-            userEurPositiveEntry,
-            userEurNegativeEntry
+            fxUsdEntry,
+            userUsdEntry,
+            fxEurEntry,
+            userEurEntry
         )
 
         assertThrows(IllegalArgumentException::class.java) {
@@ -104,7 +103,7 @@ class TransactionTest {
 
     @Test
     fun `a single entry throws`() {
-        val userEntry = LedgerEntry(topUpEurId, createMoneyObject("100", eur))
+        val userEntry = LedgerEntry(userEurId, createMoneyObject("100", eur))
 
         val entries = listOf(userEntry)
 
@@ -113,7 +112,7 @@ class TransactionTest {
                 id = TransactionId("t1"),
                 type = TransactionType.TOP_UP,
                 entries = entries,
-                createdAt
+                createdAt = createdAt
             )
         }
     }
@@ -127,7 +126,7 @@ class TransactionTest {
                 id = TransactionId("id"),
                 type = TransactionType.TOP_UP,
                 entries = entries,
-                createdAt
+                createdAt = createdAt
             )
         }
     }

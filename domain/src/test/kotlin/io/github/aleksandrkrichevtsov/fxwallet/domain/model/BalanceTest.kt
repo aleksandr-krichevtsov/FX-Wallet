@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.math.BigDecimal
 import java.util.Currency
-import kotlin.time.Instant
 
 class BalanceTest {
     private val eur: Currency = Currency.getInstance("EUR")

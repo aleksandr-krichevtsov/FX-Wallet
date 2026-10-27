@@ -29,7 +29,8 @@ class TransactionTest {
             id = TransactionId("t1"),
             type = TransactionType.TOP_UP,
             entries = entries,
-            createdAt = createdAt)
+            createdAt = createdAt
+        )
 
         assertEquals(entries, transaction.entries)
     }
@@ -77,7 +78,7 @@ class TransactionTest {
     }
 
     @Test
-    fun `an unbalanced in one currency throws`() {
+    fun `a balanced in EUR but not in USD throws`() {
         val userEurEntry = LedgerEntry(userEurId, createMoneyObject("-10.00", eur))
         val fxEurEntry = LedgerEntry(fxEurId, createMoneyObject("10.00", eur))
 

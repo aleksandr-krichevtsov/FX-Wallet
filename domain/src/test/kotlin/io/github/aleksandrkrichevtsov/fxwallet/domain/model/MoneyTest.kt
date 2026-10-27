@@ -41,7 +41,7 @@ class MoneyTest {
 
     @Test
     fun `of rejects a currency without minor units`() {
-        assertThrows<IllegalArgumentException>(IllegalArgumentException::class.java) {
+        assertThrows(IllegalArgumentException::class.java) {
             Money.of(BigDecimal("1"), xau)
         }
     }

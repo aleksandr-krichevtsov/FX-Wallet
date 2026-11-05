@@ -1,11 +1,11 @@
 package io.github.aleksandrkrichevtsov.fxwallet.domain.model
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThrows
-import org.junit.Test
 import java.math.BigDecimal
 import java.util.Currency
 import kotlin.time.Instant
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
+import org.junit.Test
 
 class TransactionTest {
     private val usd: Currency = Currency.getInstance("USD")
@@ -16,9 +16,8 @@ class TransactionTest {
     private val topUpEurId: AccountId = AccountId("top-up-eur")
     private val fxEurId: AccountId = AccountId("fx-eur")
     private val fxUsdId: AccountId = AccountId("fx-usd")
-    private fun createMoneyObject(amount: String, currency: Currency): Money {
-        return Money.of(BigDecimal(amount), currency)
-    }
+    private fun createMoneyObject(amount: String, currency: Currency): Money =
+        Money.of(BigDecimal(amount), currency)
 
     @Test
     fun `a balanced top-up is accepted`() {

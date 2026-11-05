@@ -1,18 +1,17 @@
 package io.github.aleksandrkrichevtsov.fxwallet.domain.model
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import java.math.BigDecimal
 import java.util.Currency
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class BalanceTest {
     private val eur: Currency = Currency.getInstance("EUR")
     private val userEurId: AccountId = AccountId("user-eur")
     private val topUpEurId: AccountId = AccountId("top-up-eur")
     private val userAccount: Account = Account(userEurId, AccountType.USER, eur)
-    private fun createMoneyObject(amount: String, currency: Currency): Money {
-        return Money.of(BigDecimal(amount), currency)
-    }
+    private fun createMoneyObject(amount: String, currency: Currency): Money =
+        Money.of(BigDecimal(amount), currency)
 
     @Test
     fun `no entries have zero money`() {

@@ -9,6 +9,10 @@ data class Transaction(
     val createdAt: Instant
 ) {
     init {
+        require(entries.size > 1) {
+            "Transaction has to have at least two entries."
 
+            entries.groupBy { it.money.currency }
+        }
     }
 }

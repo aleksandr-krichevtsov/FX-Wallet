@@ -1,5 +1,6 @@
 package io.github.aleksandrkrichevtsov.fxwallet.domain.model
 
+import java.util.Currency
 import kotlin.time.Instant
 
 data class Transaction(
@@ -10,9 +11,22 @@ data class Transaction(
 ) {
     init {
         require(entries.size > 1) {
-            "Transaction has to have at least two entries."
+            "Transaction ${id.value} has to have at least two entries."
+        }
 
-            entries.groupBy { it.money.currency }
+        val unbalanced = unbalancedCurrencies()
+        require(unbalanced.isEmpty()) {
+            "Transaction ${id.value} is unbalanced in: ${unbalanced.joinToString()}"
         }
     }
+
+    private fun unbalancedCurrencies(): Set<Currency> = entries
+        .groupBy { it.money.currency }
+        .filter { (currency, group) ->
+            val sum = group.fold(Money.zero(currency)) { total, entry ->
+                total + entry.money
+            }
+            !sum.isZero
+        }
+        .keys
 }

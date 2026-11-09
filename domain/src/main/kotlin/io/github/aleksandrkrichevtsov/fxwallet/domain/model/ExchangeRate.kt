@@ -7,7 +7,7 @@ import java.util.Currency
 data class ExchangeRate(val base: Currency, val quote: Currency, val rate: BigDecimal) {
     init {
         requireBaseAndQuoteToBeDifferentCurrency()
-        requireRateToBeGreaterThanOne()
+        requireRateToBeGreaterThanZero()
     }
 
     private fun requireBaseAndQuoteToBeDifferentCurrency() {
@@ -16,7 +16,7 @@ data class ExchangeRate(val base: Currency, val quote: Currency, val rate: BigDe
         }
     }
 
-    private fun requireRateToBeGreaterThanOne() {
+    private fun requireRateToBeGreaterThanZero() {
         require(rate.signum() > 0) {
             "The rate has to be greater than 0. The current rate is: $rate."
         }
@@ -32,15 +32,17 @@ data class ExchangeRate(val base: Currency, val quote: Currency, val rate: BigDe
 
         return Money.of(multipliedRawAmount, quote)
     }
+
     fun inverse(): ExchangeRate {
-        val inversedRate = BigDecimal("1.0").divide(rate, MathContext.DECIMAL128)
+        val inversedRate = BigDecimal.ONE.divide(rate, MathContext.DECIMAL128)
 
         return ExchangeRate(
             base = quote,
             quote = base,
-            inversedRate
+            rate = inversedRate
         )
     }
+
     fun cross(other: ExchangeRate): ExchangeRate {
         require(base == other.base) {
             "The base of the two rates must be the same. The current base is: $base," +

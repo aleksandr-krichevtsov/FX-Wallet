@@ -1,10 +1,10 @@
 package io.github.aleksandrkrichevtsov.fxwallet.domain.model
 
+import java.math.BigDecimal
+import java.util.Currency
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
-import java.math.BigDecimal
-import java.util.Currency
 
 class ExchangeRateTest {
     private val eur = Currency.getInstance("EUR")
@@ -49,25 +49,25 @@ class ExchangeRateTest {
     }
 
     @Test
-    fun `convert two currencies`() {
+    fun `convert multiplies by the rate and rounds to the quote currency`() {
         val result = eurToUsd.convert(Money.of(BigDecimal("10.00"), eur))
         assertEquals(Money.of(BigDecimal("10.84"), usd), result)
     }
 
     @Test
-    fun `convert two currencies with raw rounded`() {
+    fun `convert rounds a sub-cent result half-even`() {
         val result = eurToUsd.convert(Money.of(BigDecimal("0.01"), eur))
         assertEquals(Money.of(BigDecimal("0.01"), usd), result)
     }
 
     @Test
-    fun `convert to jpy with no scale`() {
+    fun `convert rounds to a currency without decimals`() {
         val result = eurToJpy.convert(Money.of(BigDecimal("10.00"), eur))
         assertEquals(Money.of(BigDecimal("1624"), jpy), result)
     }
 
     @Test
-    fun `convert negative amount`() {
+    fun `convert keeps the sign of a negative amount`() {
         val result = eurToUsd.convert(Money.of(BigDecimal("-10.00"), eur))
         assertEquals(Money.of(BigDecimal("-10.84"), usd), result)
     }
@@ -80,14 +80,14 @@ class ExchangeRateTest {
     }
 
     @Test
-    fun `inverse two currencies`() {
+    fun `inverse swaps base and quote`() {
         val result = eurToUsd.inverse()
         assertEquals(usd, result.base)
         assertEquals(eur, result.quote)
     }
 
     @Test
-    fun `inverse currencies through a conversion`() {
+    fun `inverse rate converts 10_84 USD back to 10 EUR`() {
         val usdToEur = eurToUsd.inverse()
         val usdMoney = Money.of(BigDecimal("10.84"), usd)
 
@@ -96,28 +96,26 @@ class ExchangeRateTest {
     }
 
     @Test
-    fun `cross convert correct currencies`() {
+    fun `cross gives a rate from the first quote to the second quote`() {
         val result = eurToUsd.cross(eurToGbp)
-        val base = result.base
-        val quote = result.quote
 
-        assertEquals(usd, base)
-        assertEquals(gbp, quote)
+        assertEquals(usd, result.base)
+        assertEquals(gbp, result.quote)
     }
 
     @Test
-    fun `cross convert with same base and different quotes`() {
-        val usdToGpb = eurToUsd.cross(eurToGbp)
-        val money = usdToGpb.convert(Money.of(BigDecimal("100.00"), usd))
+    fun `cross rate converts 100 USD to 79_05 GBP`() {
+        val usdToGbp = eurToUsd.cross(eurToGbp)
+        val money = usdToGbp.convert(Money.of(BigDecimal("100.00"), usd))
 
         assertEquals(Money.of(BigDecimal("79.05"), gbp), money)
     }
 
     @Test
     fun `cross two rates with different bases throws`() {
-        val usdToEur = eurToUsd.inverse()
+        val usdToGbp = ExchangeRate(usd, gbp, BigDecimal("0.7905"))
         assertThrows(IllegalArgumentException::class.java) {
-            eurToUsd.cross(usdToEur)
+            eurToUsd.cross(usdToGbp)
         }
     }
 }
